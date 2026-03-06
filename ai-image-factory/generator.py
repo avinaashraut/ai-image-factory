@@ -11,11 +11,11 @@ from typing import Any
 
 BASE_DIR = Path(__file__).resolve().parent
 CONFIG_PATH = BASE_DIR / "config.json"
+OUTPUT_CSV_PATH = BASE_DIR / "prompts" / "prompts.csv"
 
 DEFAULT_CONFIG: dict[str, Any] = {
     "num_prompts": 1000,
     "progress_interval": 50,
-    "output_csv": "prompts/prompts.csv",
     "subjects": [
         "astronaut",
         "samurai",
@@ -90,11 +90,6 @@ def load_config(config_path: Path) -> dict[str, Any]:
     if not isinstance(progress_interval, int) or progress_interval <= 0:
         raise ValueError("'progress_interval' must be a positive integer.")
 
-    output_csv = config.get("output_csv")
-    if not isinstance(output_csv, str) or not output_csv.strip():
-        raise ValueError("'output_csv' must be a non-empty string.")
-    config["output_csv"] = output_csv.strip()
-
     return config
 
 
@@ -140,13 +135,9 @@ def save_prompts(prompts: list[str], output_path: Path) -> None:
 def main() -> None:
     config = load_config(CONFIG_PATH)
 
-    output_path = Path(config["output_csv"])
-    if not output_path.is_absolute():
-        output_path = BASE_DIR / output_path
-
     prompts = generate_prompts(config)
-    save_prompts(prompts, output_path)
-    print(f"Saved {len(prompts)} prompts to {output_path}")
+    save_prompts(prompts, OUTPUT_CSV_PATH)
+    print(f"Saved {len(prompts)} prompts to {OUTPUT_CSV_PATH}")
 
 
 if __name__ == "__main__":

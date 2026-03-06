@@ -11,7 +11,8 @@ from typing import Any
 
 BASE_DIR = Path(__file__).resolve().parent
 CONFIG_PATH = BASE_DIR / "config.json"
-OUTPUT_CSV_PATH = BASE_DIR / "prompts" / "prompts.csv"
+OUTPUT_RELATIVE_PATH = Path("ai-image-factory") / "prompts" / "prompts.csv"
+OUTPUT_CSV_PATH = BASE_DIR.parent / OUTPUT_RELATIVE_PATH
 
 DEFAULT_CONFIG: dict[str, Any] = {
     "num_prompts": 1000,
